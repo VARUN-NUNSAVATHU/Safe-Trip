@@ -1,0 +1,3013 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VoltRide - Smart, Safe, and Fast Rides Just a Tap Away</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    /* -------------------------------------------------------------
+       DESIGN SYSTEM & CSS RESET
+       ------------------------------------------------------------- */
+    :root {
+      --bg-dark: #0D0D0D;
+      --bg-surface: #141414;
+      --bg-surface-elevated: #1A1A1A;
+      --accent: #D4FF3D;
+      --accent-glow: rgba(212, 255, 61, 0.35);
+      --accent-subtle: rgba(212, 255, 61, 0.12);
+      --accent-dark: #b8e61e;
+      --text-white: #FFFFFF;
+      --text-muted: #9E9E9E;
+      --text-dim: #666666;
+      --border-subtle: rgba(255, 255, 255, 0.08);
+      --border-accent: rgba(212, 255, 61, 0.4);
+      --font-main: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --radius-pill: 9999px;
+      --radius-card: 24px;
+      --radius-phone: 46px;
+      --transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      color-scheme: dark;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-white);
+      font-family: var(--font-main);
+      overflow-x: hidden;
+      line-height: 1.5;
+      position: relative;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    button {
+      cursor: pointer;
+      font-family: inherit;
+      border: none;
+      background: none;
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: var(--bg-dark);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #252525;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--accent);
+    }
+
+    /* -------------------------------------------------------------
+       STICKY NAVBAR
+       ------------------------------------------------------------- */
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      width: 100%;
+      background: rgba(13, 13, 13, 0.82);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      transition: var(--transition);
+    }
+
+    .navbar-container {
+      max-width: 1280px;
+      margin: 0 auto;
+      height: 76px;
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      user-select: none;
+    }
+
+    .logo-mark {
+      width: 40px;
+      height: 40px;
+      background: var(--accent);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 22px var(--accent-glow);
+      transition: transform 0.3s ease;
+    }
+
+    .logo-mark:hover {
+      transform: rotate(15deg) scale(1.06);
+    }
+
+    .logo-mark svg {
+      width: 22px;
+      height: 22px;
+      fill: #0D0D0D;
+    }
+
+    .logo-name {
+      font-weight: 800;
+      font-size: 20px;
+      letter-spacing: -0.5px;
+      color: var(--text-white);
+    }
+
+    .logo-name span {
+      color: var(--accent);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      list-style: none;
+    }
+
+    .nav-links li a {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-muted);
+      transition: var(--transition);
+      position: relative;
+      padding: 6px 0;
+    }
+
+    .nav-links li a:hover,
+    .nav-links li a.active {
+      color: var(--text-white);
+    }
+
+    .nav-links li a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      width: 0;
+      height: 2px;
+      background: var(--accent);
+      transition: var(--transition);
+      transform: translateX(-50%);
+      border-radius: 2px;
+    }
+
+    .nav-links li a:hover::after,
+    .nav-links li a.active::after {
+      width: 100%;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .btn-search {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: #191919;
+      border: 1px solid rgba(255, 255, 255, 0.09);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-muted);
+      transition: var(--transition);
+    }
+
+    .btn-search:hover {
+      background: #252525;
+      color: var(--accent);
+      border-color: rgba(212, 255, 61, 0.4);
+      transform: scale(1.06);
+    }
+
+    .btn-pill-cta {
+      background: var(--accent);
+      color: #0D0D0D;
+      font-weight: 800;
+      font-size: 14px;
+      padding: 12px 24px;
+      border-radius: var(--radius-pill);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 4px 18px var(--accent-glow);
+      transition: var(--transition);
+      white-space: nowrap;
+    }
+
+    .btn-pill-cta:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(212, 255, 61, 0.5);
+      background: #e0ff54;
+    }
+
+    .btn-pill-cta svg {
+      width: 16px;
+      height: 16px;
+      fill: #0D0D0D;
+    }
+
+    .hamburger {
+      display: none;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: #191919;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .hamburger span {
+      width: 18px;
+      height: 2px;
+      background: var(--text-white);
+      border-radius: 2px;
+      transition: var(--transition);
+    }
+
+    /* Mobile Drawer */
+    .mobile-drawer {
+      position: fixed;
+      top: 76px;
+      left: 0;
+      width: 100%;
+      background: #111111;
+      border-bottom: 1px solid var(--border-subtle);
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      transform: translateY(-120%);
+      opacity: 0;
+      transition: transform 0.35s ease, opacity 0.3s ease;
+      z-index: 999;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.85);
+    }
+
+    .mobile-drawer.open {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    .mobile-drawer a {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--text-muted);
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+    }
+
+    .mobile-drawer a:hover {
+      color: var(--accent);
+    }
+
+    /* -------------------------------------------------------------
+       HERO SECTION WITH TOP LIME GLOW & EXACT TYPOGRAPHY
+       ------------------------------------------------------------- */
+    .hero-section {
+      position: relative;
+      padding: 70px 24px 80px;
+      overflow: hidden;
+      /* Top lime-to-black glow matching Dribbble motion design */
+      background: 
+        radial-gradient(ellipse 90% 55% at 50% -8%, rgba(212, 255, 61, 0.24) 0%, rgba(212, 255, 61, 0.06) 42%, transparent 75%),
+        radial-gradient(circle at 50% 55%, rgba(212, 255, 61, 0.04) 0%, transparent 60%),
+        var(--bg-dark);
+      text-align: center;
+    }
+
+    .hero-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* Hero Headline: Exact 3-line layout matching Image 1 */
+    .hero-headline {
+      font-size: clamp(38px, 6vw, 76px);
+      font-weight: 800;
+      line-height: 1.05;
+      letter-spacing: -2.5px;
+      max-width: 900px;
+      margin: 0 auto 32px;
+      text-wrap: balance;
+    }
+
+    .hero-headline .w {
+      color: var(--text-white);
+    }
+
+    .hero-headline .m {
+      color: var(--text-muted);
+      font-weight: 700;
+    }
+
+    .hero-subtitle {
+      font-size: clamp(16px, 1.8vw, 19px);
+      color: var(--text-muted);
+      max-width: 620px;
+      margin: 0 auto 38px;
+      font-weight: 400;
+      line-height: 1.6;
+    }
+
+    /* Showcase View Switcher (Laptop+Phone Duo vs 3-Phone Trio) */
+    .view-switcher-bar {
+      display: inline-flex;
+      background: #161616;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: var(--radius-pill);
+      padding: 4px;
+      gap: 4px;
+      margin-bottom: 40px;
+    }
+
+    .btn-view-toggle {
+      padding: 8px 18px;
+      font-size: 12px;
+      font-weight: 700;
+      border-radius: var(--radius-pill);
+      color: var(--text-muted);
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn-view-toggle.active {
+      background: var(--accent);
+      color: #0D0D0D;
+      box-shadow: 0 2px 10px var(--accent-glow);
+    }
+
+    /* -------------------------------------------------------------
+       DEVICES STAGE & GROUND SHADOW
+       ------------------------------------------------------------- */
+    .device-stage {
+      position: relative;
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 20px 0 50px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 580px;
+    }
+
+    .ground-shadow {
+      position: absolute;
+      bottom: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 90%;
+      height: 80px;
+      background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.6) 40%, transparent 75%);
+      filter: blur(30px);
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    /* -------------------------------------------------------------
+       MODE A: 3-PHONE SHOWCASE (EXACT MATCH TO DRIBBLE IMAGE 2)
+       ------------------------------------------------------------- */
+    .phone-trio-wrap {
+      position: relative;
+      width: 100%;
+      max-width: 860px;
+      height: 560px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 2;
+    }
+
+    /* Common Phone Styles */
+    .iphone-frame {
+      border-radius: var(--radius-phone);
+      background: #111111;
+      border: 4px solid #303030;
+      box-shadow: 0 25px 50px rgba(0,0,0,0.85), inset 0 0 0 2px #1c1c1c;
+      overflow: hidden;
+      position: absolute;
+      transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), filter 0.45s ease;
+      user-select: none;
+    }
+
+    /* LEFT PHONE: Navigation HUD & Road Perspective */
+    .iphone-left {
+      width: 280px;
+      height: 480px;
+      left: 6%;
+      top: 40px;
+      z-index: 3;
+      transform: rotate(-7deg) translateY(10px) scale(0.92);
+      filter: brightness(0.88);
+      background: #0D0D0D;
+    }
+
+    .iphone-left:hover {
+      transform: rotate(-3deg) translateY(-4px) scale(0.96);
+      filter: brightness(1);
+      z-index: 10;
+    }
+
+    .left-screen-inner {
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(180deg, #182613 0%, #11180c 45%, #0d0d0d 100%);
+      position: relative;
+      padding: 14px 14px 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      overflow: hidden;
+    }
+
+    /* Simulated road visual background */
+    .road-scenery-bg {
+      position: absolute;
+      inset: 0;
+      opacity: 0.35;
+      background: 
+        linear-gradient(180deg, transparent 40%, rgba(0,0,0,0.8) 100%),
+        radial-gradient(circle at 50% 60%, #304e22 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    /* Left Phone: Arnold Aldridge card */
+    .left-pilot-card {
+      position: relative;
+      z-index: 4;
+      background: rgba(22, 22, 22, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(14px);
+      border-radius: 18px;
+      padding: 10px 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 26px;
+    }
+
+    .pilot-avatar-wrap {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 2px solid var(--accent);
+      background: #333;
+    }
+
+    .pilot-avatar-wrap svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    .pilot-details {
+      text-align: left;
+    }
+
+    .pilot-name {
+      font-size: 13px;
+      font-weight: 800;
+      color: #FFF;
+      line-height: 1.2;
+    }
+
+    .pilot-rating {
+      font-size: 11px;
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    /* Left Phone: Navigation Indicator (250m Left Turn) */
+    .left-turn-card {
+      position: relative;
+      z-index: 4;
+      background: rgba(18, 18, 18, 0.88);
+      border: 1px solid rgba(212, 255, 61, 0.3);
+      backdrop-filter: blur(14px);
+      border-radius: 18px;
+      padding: 12px 14px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .turn-arrow-badge {
+      width: 36px;
+      height: 36px;
+      border-radius: 12px;
+      background: var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .turn-arrow-badge svg {
+      width: 20px;
+      height: 20px;
+      fill: #0D0D0D;
+    }
+
+    .turn-text {
+      text-align: left;
+    }
+
+    .turn-dist {
+      font-size: 16px;
+      font-weight: 900;
+      color: #FFF;
+    }
+
+    .turn-sub {
+      font-size: 11px;
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    /* CENTER PHONE: Main Featured iPhone */
+    .iphone-center {
+      width: 330px;
+      height: 540px;
+      z-index: 6;
+      left: 50%;
+      top: 10px;
+      transform: translateX(-50%);
+      box-shadow: 
+        0 35px 80px -15px rgba(0, 0, 0, 0.95),
+        0 0 45px rgba(212, 255, 61, 0.22),
+        inset 0 0 0 2px #222;
+      border: 4px solid #383838;
+      background: #090909;
+    }
+
+    .iphone-center:hover {
+      transform: translateX(-50%) translateY(-6px) scale(1.02);
+    }
+
+    .center-screen-inner {
+      width: 100%;
+      height: 100%;
+      padding: 16px 16px 20px;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      background: #0A0A0A;
+    }
+
+    /* Dynamic Island */
+    .dynamic-island {
+      width: 90px;
+      height: 22px;
+      background: #000000;
+      border-radius: 20px;
+      margin: 0 auto 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 9px;
+      box-shadow: inset 0 0 4px rgba(255,255,255,0.05);
+    }
+
+    .dynamic-cam {
+      width: 8px;
+      height: 8px;
+      background: #111;
+      border: 1px solid #222;
+      border-radius: 50%;
+    }
+
+    .dynamic-sensor {
+      width: 6px;
+      height: 6px;
+      background: #09131d;
+      border-radius: 50%;
+    }
+
+    /* Status Bar */
+    .iphone-statusbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 12px;
+      font-weight: 700;
+      color: #D6D6D6;
+      padding: 0 4px 14px;
+    }
+
+    .iphone-statusbar .time {
+      font-weight: 800;
+    }
+
+    .iphone-statusbar .status-icons {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .iphone-statusbar svg {
+      width: 13px;
+      height: 13px;
+      fill: #D6D6D6;
+    }
+
+    /* Center Phone: User Welcome Header "Hello Shahriar" & Avatar */
+    .center-user-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 18px;
+      padding: 0 2px;
+    }
+
+    .user-greet-text {
+      text-align: left;
+    }
+
+    .user-greet-text .greet-hello {
+      font-size: 15px;
+      color: var(--text-muted);
+      font-weight: 500;
+      display: block;
+      margin-bottom: 2px;
+    }
+
+    .user-greet-text .greet-name {
+      font-size: 26px;
+      font-weight: 900;
+      color: var(--text-white);
+      letter-spacing: -0.8px;
+      line-height: 1.1;
+    }
+
+    /* Circular User Avatar matching Dribbble reference */
+    .user-avatar-badge {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      border: 2px solid var(--accent);
+      background: #252525;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 16px var(--accent-glow);
+    }
+
+    .user-avatar-badge svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    /* Center Phone: Vibrant Lime Card ("30% Better") */
+    .center-lime-card {
+      background: linear-gradient(150deg, #D4FF3D 0%, #bdec18 100%);
+      border-radius: 26px;
+      padding: 20px 18px;
+      color: #0D0D0D;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 14px 34px rgba(212, 255, 61, 0.38);
+      margin-bottom: 16px;
+      text-align: left;
+    }
+
+    /* Black Pill Badge "30% Better" */
+    .pill-tag-better {
+      background: #000000;
+      color: var(--accent);
+      font-size: 11px;
+      font-weight: 800;
+      padding: 5px 12px;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+      margin-bottom: 12px;
+    }
+
+    .pill-tag-better .dot {
+      width: 6px;
+      height: 6px;
+      background: var(--accent);
+      border-radius: 50%;
+    }
+
+    /* 3D Hand with Wallet & Cash SVG */
+    .lime-card-graphic-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+
+    .graphic-stat-text .stat-num {
+      font-size: 28px;
+      font-weight: 900;
+      color: #0D0D0D;
+      letter-spacing: -1px;
+      line-height: 1;
+    }
+
+    .graphic-stat-text .stat-sub {
+      font-size: 11px;
+      font-weight: 700;
+      color: #2b3310;
+      margin-top: 4px;
+    }
+
+    .wallet-3d-visual {
+      width: 80px;
+      height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .wallet-3d-visual svg {
+      width: 100%;
+      height: 100%;
+      filter: drop-shadow(0 6px 8px rgba(0,0,0,0.18));
+    }
+
+    /* Google Play White Pill Button */
+    .btn-googleplay-phone {
+      background: #FFFFFF;
+      color: #0D0D0D;
+      font-weight: 800;
+      font-size: 13px;
+      padding: 11px 20px;
+      border-radius: var(--radius-pill);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+      transition: transform 0.2s ease;
+      width: 100%;
+    }
+
+    .btn-googleplay-phone:hover {
+      transform: scale(1.02);
+    }
+
+    .btn-googleplay-phone svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    /* Today Earnings bottom strip */
+    .center-phone-bottom {
+      background: #141414;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 20px;
+      padding: 14px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      text-align: left;
+    }
+
+    .earnings-text {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .earnings-text span {
+      display: block;
+      color: var(--text-white);
+      font-size: 16px;
+      font-weight: 800;
+    }
+
+    .duty-pill {
+      background: rgba(212, 255, 61, 0.12);
+      color: var(--accent);
+      border: 1px solid rgba(212, 255, 61, 0.25);
+      font-size: 10px;
+      font-weight: 800;
+      padding: 4px 12px;
+      border-radius: 999px;
+    }
+
+    /* RIGHT PHONE: Ride Request Notification */
+    .iphone-right {
+      width: 280px;
+      height: 480px;
+      right: 6%;
+      top: 40px;
+      z-index: 3;
+      transform: rotate(7deg) translateY(10px) scale(0.92);
+      filter: brightness(0.88);
+      background: #0D0D0D;
+    }
+
+    .iphone-right:hover {
+      transform: rotate(3deg) translateY(-4px) scale(0.96);
+      filter: brightness(1);
+      z-index: 10;
+    }
+
+    .right-screen-inner {
+      width: 100%;
+      height: 100%;
+      background: #0E0E0E;
+      position: relative;
+      padding: 16px 14px 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .right-top-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 24px;
+    }
+
+    .bell-circle {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: #1C1C1C;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .bell-circle svg {
+      width: 16px;
+      height: 16px;
+      fill: var(--text-white);
+    }
+
+    .request-notification-card {
+      background: #161616;
+      border: 1px solid rgba(212, 255, 61, 0.3);
+      border-radius: 20px;
+      padding: 16px;
+      text-align: left;
+      box-shadow: 0 10px 24px rgba(0,0,0,0.6);
+    }
+
+    .req-head {
+      font-size: 14px;
+      font-weight: 800;
+      color: #FFF;
+      margin-bottom: 6px;
+      line-height: 1.3;
+    }
+
+    .req-time-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: rgba(212, 255, 61, 0.12);
+      color: var(--accent);
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 999px;
+      margin-top: 10px;
+    }
+
+    /* -------------------------------------------------------------
+       MODE B: LAPTOP + OVERLAPPING PHONE DUO
+       ------------------------------------------------------------- */
+    .laptop-duo-wrap {
+      display: none;
+      position: relative;
+      width: 100%;
+      max-width: 900px;
+      z-index: 2;
+    }
+
+    .laptop-mockup {
+      width: 100%;
+      max-width: 860px;
+      margin: 0 auto;
+      filter: drop-shadow(0 30px 60px rgba(0,0,0,0.85));
+    }
+
+    .laptop-screen-bezel {
+      background: #181818;
+      border: 3px solid #2B2B2B;
+      border-radius: 20px 20px 0 0;
+      padding: 14px 14px 0 14px;
+      position: relative;
+      box-shadow: 0 0 0 1px #111, inset 0 0 0 1px #333;
+    }
+
+    .laptop-camera {
+      position: absolute;
+      top: 6px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 6px;
+      height: 6px;
+      background: #090909;
+      border: 1px solid #333;
+      border-radius: 50%;
+    }
+
+    .laptop-screen-content {
+      background: #0D0D0D;
+      border-radius: 12px 12px 0 0;
+      height: 460px;
+      overflow: hidden;
+      position: relative;
+      text-align: left;
+      background: 
+        radial-gradient(ellipse 70% 50% at 50% 0%, rgba(212, 255, 61, 0.2) 0%, transparent 65%),
+        #0D0D0D;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Mini Navbar inside Laptop Screen */
+    .mini-nav {
+      height: 44px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      padding: 0 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(13, 13, 13, 0.65);
+      backdrop-filter: blur(10px);
+    }
+
+    .mini-logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .mini-mark {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .mini-mark svg {
+      width: 12px;
+      height: 12px;
+      fill: #0D0D0D;
+    }
+
+    .mini-brand {
+      font-size: 13px;
+      font-weight: 800;
+      color: #FFF;
+    }
+
+    .mini-links {
+      display: flex;
+      gap: 18px;
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .mini-cta {
+      background: var(--accent);
+      color: #0D0D0D;
+      font-size: 11px;
+      font-weight: 800;
+      padding: 5px 14px;
+      border-radius: 999px;
+    }
+
+    /* Mini Hero in Laptop */
+    .mini-hero {
+      padding: 38px 28px 20px;
+      text-align: center;
+    }
+
+    .mini-badge {
+      display: inline-block;
+      font-size: 11px;
+      background: rgba(212, 255, 61, 0.12);
+      color: var(--accent);
+      padding: 4px 12px;
+      border-radius: 999px;
+      margin-bottom: 14px;
+      font-weight: 700;
+    }
+
+    .mini-title {
+      font-size: 28px;
+      font-weight: 800;
+      line-height: 1.15;
+      letter-spacing: -1px;
+      margin-bottom: 16px;
+    }
+
+    .mini-title .mw { color: #FFFFFF; }
+    .mini-title .mm { color: #888888; }
+
+    .mini-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      padding: 0 28px 24px;
+    }
+
+    .mini-card {
+      background: #151515;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 14px;
+      padding: 16px;
+    }
+
+    .mini-card-icon {
+      width: 30px;
+      height: 30px;
+      border-radius: 10px;
+      background: rgba(212, 255, 61, 0.12);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 10px;
+    }
+
+    .mini-card-icon svg {
+      width: 16px;
+      height: 16px;
+      fill: var(--accent);
+    }
+
+    .mini-card-title {
+      font-size: 12px;
+      font-weight: 800;
+      color: #FFF;
+      margin-bottom: 4px;
+    }
+
+    .mini-card-desc {
+      font-size: 10px;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+
+    .laptop-base {
+      height: 14px;
+      background: linear-gradient(180deg, #383838 0%, #202020 60%, #151515 100%);
+      border-radius: 0 0 16px 16px;
+      position: relative;
+      box-shadow: 0 8px 18px rgba(0,0,0,0.6);
+    }
+
+    .laptop-notch {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 110px;
+      height: 5px;
+      background: #111;
+      border-radius: 0 0 5px 5px;
+    }
+
+    /* Leaning phone in Laptop Duo */
+    .duo-overlapping-phone {
+      position: absolute;
+      right: 5%;
+      bottom: -30px;
+      width: 310px;
+      z-index: 10;
+      box-shadow: 0 25px 60px rgba(0,0,0,0.95), 0 0 35px rgba(212, 255, 61, 0.2);
+    }
+
+    /* -------------------------------------------------------------
+       DRIBBLE MOTION GRAPHIC CONTROLS (Pink & Lime Scrub Bar)
+       ------------------------------------------------------------- */
+    .motion-controls-bar {
+      max-width: 860px;
+      margin: 20px auto 0;
+      background: rgba(20, 20, 20, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(16px);
+      border-radius: var(--radius-pill);
+      padding: 10px 20px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      z-index: 5;
+      position: relative;
+    }
+
+    .btn-motion-play {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: #E91E63;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 14px rgba(233, 30, 99, 0.4);
+      transition: transform 0.2s ease;
+      flex-shrink: 0;
+    }
+
+    .btn-motion-play:hover {
+      transform: scale(1.08);
+    }
+
+    .btn-motion-play svg {
+      width: 16px;
+      height: 16px;
+      fill: #FFFFFF;
+      margin-left: 2px;
+    }
+
+    .btn-motion-sound {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: #252525;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #BBB;
+      flex-shrink: 0;
+    }
+
+    .btn-motion-sound svg {
+      width: 16px;
+      height: 16px;
+      fill: currentColor;
+    }
+
+    .motion-progress-track {
+      flex: 1;
+      height: 6px;
+      background: #2A2A2A;
+      border-radius: 3px;
+      position: relative;
+      cursor: pointer;
+      overflow: hidden;
+    }
+
+    .motion-progress-fill {
+      height: 100%;
+      width: 48%;
+      background: linear-gradient(90deg, #E91E63 0%, var(--accent) 100%);
+      border-radius: 3px;
+      transition: width 0.3s ease;
+    }
+
+    .motion-time-stamp {
+      font-size: 11px;
+      font-weight: 700;
+      color: #9E9E9E;
+      font-family: monospace;
+      white-space: nowrap;
+    }
+
+    /* -------------------------------------------------------------
+       SOCIAL PROOF: "Loved by Riders Everywhere"
+       ------------------------------------------------------------- */
+    .social-proof-section {
+      padding: 90px 24px;
+      background: #0D0D0D;
+      position: relative;
+      border-top: 1px solid rgba(255, 255, 255, 0.04);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    }
+
+    .proof-container {
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+
+    .proof-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: 40px;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .proof-titles h2 {
+      font-size: clamp(30px, 4vw, 44px);
+      font-weight: 800;
+      color: var(--text-white);
+      letter-spacing: -1.2px;
+      margin-bottom: 8px;
+    }
+
+    .proof-titles p {
+      font-size: 16px;
+      color: var(--text-muted);
+    }
+
+    .proof-titles p span {
+      color: var(--accent);
+      font-weight: 800;
+    }
+
+    .carousel-arrows {
+      display: flex;
+      gap: 10px;
+    }
+
+    .btn-arrow {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: #181818;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: var(--text-white);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: var(--transition);
+    }
+
+    .btn-arrow:hover {
+      background: var(--accent);
+      color: #0D0D0D;
+      border-color: var(--accent);
+      transform: scale(1.05);
+    }
+
+    .btn-arrow svg {
+      width: 18px;
+      height: 18px;
+      fill: currentColor;
+    }
+
+    .proof-scroll-track {
+      display: flex;
+      gap: 20px;
+      overflow-x: auto;
+      padding: 10px 4px 30px;
+      scroll-snap-type: x mandatory;
+      scrollbar-width: thin;
+      scrollbar-color: #262626 transparent;
+    }
+
+    .proof-card {
+      flex: 0 0 320px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-card);
+      padding: 24px;
+      scroll-snap-align: start;
+      transition: var(--transition);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+    }
+
+    .proof-card:hover {
+      background: var(--bg-surface-elevated);
+      border-color: var(--border-accent);
+      transform: translateY(-6px);
+      box-shadow: 0 16px 36px rgba(0,0,0,0.6);
+    }
+
+    .rider-profile-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 16px;
+    }
+
+    .rider-avatar {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background: #252525;
+      overflow: hidden;
+      border: 2px solid rgba(212, 255, 61, 0.4);
+      flex-shrink: 0;
+      position: relative;
+    }
+
+    .rider-avatar svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    .rider-meta {
+      flex: 1;
+      text-align: left;
+    }
+
+    .rider-name {
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--text-white);
+    }
+
+    .rider-location {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .stars-row {
+      display: flex;
+      gap: 3px;
+      margin-bottom: 12px;
+    }
+
+    .stars-row svg {
+      width: 14px;
+      height: 14px;
+      fill: var(--accent);
+    }
+
+    .rider-quote {
+      font-size: 14px;
+      color: #E2E2E2;
+      line-height: 1.5;
+      margin-bottom: 16px;
+      font-style: italic;
+      text-align: left;
+    }
+
+    .rider-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--accent);
+      background: var(--accent-subtle);
+      padding: 4px 10px;
+      border-radius: 999px;
+      width: fit-content;
+    }
+
+    /* -------------------------------------------------------------
+       HOW IT WORKS SECTION
+       ------------------------------------------------------------- */
+    .how-section {
+      padding: 100px 24px;
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin-bottom: 12px;
+    }
+
+    .section-title {
+      font-size: clamp(30px, 4vw, 46px);
+      font-weight: 800;
+      letter-spacing: -1.2px;
+      margin-bottom: 16px;
+      color: var(--text-white);
+    }
+
+    .section-title span {
+      color: var(--text-muted);
+    }
+
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+      margin-top: 50px;
+    }
+
+    .step-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-card);
+      padding: 36px 28px;
+      position: relative;
+      transition: var(--transition);
+      overflow: hidden;
+      text-align: left;
+    }
+
+    .step-card:hover {
+      border-color: var(--border-accent);
+      transform: translateY(-6px);
+      background: var(--bg-surface-elevated);
+    }
+
+    .step-number {
+      font-size: 56px;
+      font-weight: 900;
+      color: rgba(255, 255, 255, 0.05);
+      position: absolute;
+      top: 20px;
+      right: 24px;
+      line-height: 1;
+      font-family: monospace;
+    }
+
+    .step-icon-wrap {
+      width: 56px;
+      height: 56px;
+      border-radius: 18px;
+      background: var(--accent-subtle);
+      border: 1px solid rgba(212, 255, 61, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 24px;
+    }
+
+    .step-icon-wrap svg {
+      width: 28px;
+      height: 28px;
+      fill: var(--accent);
+    }
+
+    .step-heading {
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--text-white);
+      margin-bottom: 12px;
+    }
+
+    .step-text {
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    /* -------------------------------------------------------------
+       INTERACTIVE FARE CALCULATOR & BOOKING PREVIEW
+       ------------------------------------------------------------- */
+    .calculator-section {
+      padding: 80px 24px;
+      background: 
+        radial-gradient(circle at 10% 50%, rgba(212, 255, 61, 0.05) 0%, transparent 50%),
+        #111111;
+      border-top: 1px solid rgba(255, 255, 255, 0.04);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    }
+
+    .calc-container {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 40px;
+      align-items: center;
+    }
+
+    .calc-info {
+      text-align: left;
+    }
+
+    .calc-info h2 {
+      font-size: 38px;
+      font-weight: 800;
+      letter-spacing: -1px;
+      margin-bottom: 16px;
+      line-height: 1.15;
+    }
+
+    .calc-info p {
+      font-size: 16px;
+      color: var(--text-muted);
+      margin-bottom: 28px;
+      line-height: 1.6;
+    }
+
+    .calc-benefits {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .calc-benefits li {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 14px;
+      color: #D0D0D0;
+    }
+
+    .calc-benefits li svg {
+      width: 18px;
+      height: 18px;
+      fill: var(--accent);
+      flex-shrink: 0;
+    }
+
+    .calc-box {
+      background: #181818;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: var(--radius-card);
+      padding: 32px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+      text-align: left;
+    }
+
+    .calc-tabs {
+      display: flex;
+      gap: 8px;
+      background: #0D0D0D;
+      padding: 6px;
+      border-radius: var(--radius-pill);
+      margin-bottom: 24px;
+    }
+
+    .ride-tab-btn {
+      flex: 1;
+      padding: 10px;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-muted);
+      border-radius: var(--radius-pill);
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .ride-tab-btn.active {
+      background: var(--accent);
+      color: #0D0D0D;
+      box-shadow: 0 2px 10px var(--accent-glow);
+    }
+
+    .input-group {
+      margin-bottom: 16px;
+    }
+
+    .input-group label {
+      display: block;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+
+    .input-field {
+      width: 100%;
+      background: #0D0D0D;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      padding: 12px 16px;
+      color: #FFF;
+      font-size: 14px;
+      font-family: inherit;
+      outline: none;
+      transition: var(--transition);
+    }
+
+    .input-field:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 2px rgba(212, 255, 61, 0.2);
+    }
+
+    .estimate-result-card {
+      background: rgba(212, 255, 61, 0.08);
+      border: 1px solid rgba(212, 255, 61, 0.25);
+      border-radius: 16px;
+      padding: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin: 24px 0 20px;
+    }
+
+    .est-text .est-label {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .est-text .est-price {
+      font-size: 28px;
+      font-weight: 900;
+      color: var(--accent);
+    }
+
+    .est-meta {
+      text-align: right;
+    }
+
+    .est-meta .est-time {
+      font-size: 14px;
+      font-weight: 700;
+      color: #FFF;
+    }
+
+    .est-meta .est-sub {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .btn-calc-submit {
+      width: 100%;
+      background: var(--accent);
+      color: #0D0D0D;
+      font-weight: 800;
+      font-size: 15px;
+      padding: 14px;
+      border-radius: var(--radius-pill);
+      box-shadow: 0 4px 20px var(--accent-glow);
+      transition: var(--transition);
+    }
+
+    .btn-calc-submit:hover {
+      background: #e0ff54;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 25px rgba(212, 255, 61, 0.5);
+    }
+
+    /* -------------------------------------------------------------
+       FEATURES GRID
+       ------------------------------------------------------------- */
+    .features-section {
+      padding: 100px 24px;
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 24px;
+      margin-top: 48px;
+    }
+
+    .feature-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-card);
+      padding: 32px;
+      transition: var(--transition);
+      text-align: left;
+    }
+
+    .feature-card:hover {
+      border-color: var(--border-accent);
+      transform: translateY(-4px);
+      background: var(--bg-surface-elevated);
+    }
+
+    .feat-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      background: var(--accent-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+
+    .feat-icon svg {
+      width: 24px;
+      height: 24px;
+      fill: var(--accent);
+    }
+
+    .feature-card h3 {
+      font-size: 18px;
+      font-weight: 800;
+      color: #FFF;
+      margin-bottom: 10px;
+    }
+
+    .feature-card p {
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    /* -------------------------------------------------------------
+       DOWNLOAD CTA BANNER
+       ------------------------------------------------------------- */
+    .cta-banner-section {
+      padding: 80px 24px 100px;
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+
+    .cta-banner-box {
+      background: 
+        radial-gradient(ellipse at 50% 0%, rgba(212, 255, 61, 0.28) 0%, rgba(212, 255, 61, 0.06) 50%, #151515 90%),
+        #151515;
+      border: 1px solid rgba(212, 255, 61, 0.35);
+      border-radius: 36px;
+      padding: 64px 32px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.8), 0 0 45px rgba(212, 255, 61, 0.15);
+    }
+
+    .cta-banner-box h2 {
+      font-size: clamp(32px, 4.5vw, 56px);
+      font-weight: 900;
+      letter-spacing: -1.8px;
+      margin-bottom: 16px;
+      color: #FFF;
+    }
+
+    .cta-banner-box h2 span {
+      color: var(--accent);
+    }
+
+    .cta-banner-box p {
+      font-size: 17px;
+      color: var(--text-muted);
+      max-width: 580px;
+      margin: 0 auto 36px;
+    }
+
+    .cta-buttons-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .btn-store-dark {
+      background: #171717;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: var(--text-white);
+      font-weight: 700;
+      font-size: 14px;
+      padding: 12px 24px;
+      border-radius: var(--radius-pill);
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      transition: var(--transition);
+    }
+
+    .btn-store-dark:hover {
+      background: #222222;
+      border-color: rgba(255, 255, 255, 0.28);
+      transform: translateY(-2px);
+    }
+
+    .btn-store-dark svg {
+      width: 18px;
+      height: 18px;
+      fill: var(--text-white);
+    }
+
+    /* -------------------------------------------------------------
+       FOOTER
+       ------------------------------------------------------------- */
+    .footer {
+      background: #080808;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      padding: 60px 24px 36px;
+      text-align: left;
+    }
+
+    .footer-container {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 2fr repeat(3, 1fr);
+      gap: 40px;
+      margin-bottom: 50px;
+    }
+
+    .footer-brand p {
+      font-size: 14px;
+      color: var(--text-muted);
+      margin-top: 14px;
+      max-width: 300px;
+      line-height: 1.6;
+    }
+
+    .footer-col h4 {
+      font-size: 14px;
+      font-weight: 700;
+      color: #FFF;
+      margin-bottom: 18px;
+    }
+
+    .footer-col ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .footer-col ul li a {
+      font-size: 13px;
+      color: var(--text-muted);
+      transition: var(--transition);
+    }
+
+    .footer-col ul li a:hover {
+      color: var(--accent);
+    }
+
+    .footer-bottom {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding-top: 24px;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 13px;
+      color: var(--text-dim);
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    /* -------------------------------------------------------------
+       SEARCH MODAL
+       ------------------------------------------------------------- */
+    .search-modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(12px);
+      z-index: 2000;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding-top: 100px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
+    }
+
+    .search-modal-backdrop.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .search-modal-card {
+      background: #181818;
+      border: 1px solid rgba(212, 255, 61, 0.3);
+      border-radius: 20px;
+      width: 90%;
+      max-width: 580px;
+      padding: 24px;
+      box-shadow: 0 25px 60px rgba(0,0,0,0.9), 0 0 30px rgba(212, 255, 61, 0.15);
+      transform: translateY(-20px);
+      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .search-modal-backdrop.active .search-modal-card {
+      transform: translateY(0);
+    }
+
+    .search-input-wrap {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: #0D0D0D;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: var(--radius-pill);
+      padding: 12px 18px;
+    }
+
+    .search-input-wrap svg {
+      width: 18px;
+      height: 18px;
+      fill: var(--text-muted);
+    }
+
+    .search-input-wrap input {
+      flex: 1;
+      background: transparent;
+      border: none;
+      outline: none;
+      color: #FFF;
+      font-size: 15px;
+      font-family: inherit;
+    }
+
+    .search-quick-tags {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 16px;
+    }
+
+    .quick-tag {
+      font-size: 11px;
+      background: #242424;
+      color: var(--text-muted);
+      padding: 6px 12px;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .quick-tag:hover {
+      background: var(--accent);
+      color: #0D0D0D;
+    }
+
+    /* -------------------------------------------------------------
+       RESPONSIVE DESIGN
+       ------------------------------------------------------------- */
+    @media (max-width: 1024px) {
+      .nav-links {
+        display: none;
+      }
+      .hamburger {
+        display: flex;
+      }
+      .iphone-left {
+        left: 2%;
+        transform: rotate(-5deg) scale(0.85);
+      }
+      .iphone-right {
+        right: 2%;
+        transform: rotate(5deg) scale(0.85);
+      }
+      .footer-container {
+        grid-template-columns: 1fr 1fr;
+      }
+      .calc-container {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .hero-section {
+        padding: 50px 16px 70px;
+      }
+
+      .hero-headline {
+        font-size: 34px;
+        letter-spacing: -1px;
+      }
+
+      .phone-trio-wrap {
+        height: auto;
+        min-height: 540px;
+        flex-direction: column;
+      }
+
+      .iphone-left,
+      .iphone-right {
+        display: none;
+      }
+
+      .iphone-center {
+        position: relative;
+        left: auto;
+        top: auto;
+        transform: none !important;
+        width: 100%;
+        max-width: 320px;
+      }
+
+      .laptop-duo-wrap {
+        flex-direction: column;
+      }
+
+      .duo-overlapping-phone {
+        position: relative;
+        right: auto;
+        bottom: auto;
+        margin-top: 20px;
+      }
+
+      .footer-container {
+        grid-template-columns: 1fr;
+      }
+
+      .proof-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- =============================================================
+       STICKY NAVBAR
+       ============================================================= -->
+  <nav class="navbar" id="navbar">
+    <div class="navbar-container">
+      <!-- Left: Logo mark with simple lightning icon -->
+      <a href="#home" class="logo-group">
+        <div class="logo-mark" aria-label="VoltRide Logo">
+          <svg viewBox="0 0 24 24">
+            <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
+          </svg>
+        </div>
+        <span class="logo-name">Volt<span>Ride</span></span>
+      </a>
+
+      <!-- Center: Nav links in muted gray, small font -->
+      <ul class="nav-links">
+        <li><a href="#home" class="active">Home</a></li>
+        <li><a href="#how-it-works">How It Works</a></li>
+        <li><a href="#features">Features</a></li>
+        <li><a href="#fare-estimator">Fares</a></li>
+        <li><a href="#testimonials">Testimonial</a></li>
+      </ul>
+
+      <!-- Right: Search button + Lime Green Pill CTA ("Get it on Google Play") -->
+      <div class="nav-actions">
+        <button class="btn-search" id="searchBtn" aria-label="Search">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+        </button>
+
+        <a href="#download" class="btn-pill-cta">
+          <!-- Google Play Icon -->
+          <svg viewBox="0 0 24 24">
+            <path d="M3.609 1.814L13.793 12 3.61 22.186c-.37-.367-.61-.91-.61-1.544V3.358c0-.634.24-1.177.61-1.544zm11.605 11.608l2.585 2.585-11.45 6.611 8.865-9.196zm2.585-2.844l-2.585 2.585-8.865-9.196 11.45 6.611zm1.408 1.422c.44.254.793.71.793 1.258s-.353 1.004-.793 1.258l-2.025 1.17-2.766-2.766 2.766-2.766 2.025 1.17c.001 0 .001 0 0 0z"/>
+          </svg>
+          Get it on Google Play
+        </a>
+
+        <!-- Mobile Hamburger Toggle -->
+        <button class="hamburger" id="hamburgerBtn" aria-label="Toggle Menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Mobile Drawer -->
+  <div class="mobile-drawer" id="mobileDrawer">
+    <a href="#home" class="mobile-link">Home</a>
+    <a href="#how-it-works" class="mobile-link">How It Works</a>
+    <a href="#features" class="mobile-link">Features</a>
+    <a href="#fare-estimator" class="mobile-link">Fares</a>
+    <a href="#testimonials" class="mobile-link">Testimonial</a>
+    <a href="#download" class="btn-pill-cta mobile-link" style="justify-content: center; margin-top: 10px;">
+      Get it on Google Play
+    </a>
+  </div>
+
+  <!-- =============================================================
+       HERO SECTION
+       ============================================================= -->
+  <section class="hero-section" id="home">
+    <div class="hero-container">
+      
+      <!-- Giant Headline: Exact 3-line layout & alternating word colors matching Reference Image 1 -->
+      <h1 class="hero-headline">
+        <span class="w">Smart,</span> <span class="m">safe, and</span><br>
+        <span class="w">fast</span> <span class="m">rides just a</span><br>
+        <span class="m">tap away</span>
+      </h1>
+
+      <p class="hero-subtitle">
+        Beat the city traffic with instant bike taxis and cabs. Zero surge pricing, real-time geofence tracking, and verified pilots ready in under 2 minutes.
+      </p>
+
+      <!-- View Switcher Toggle (Phone Trio vs Laptop Duo) -->
+      <div class="view-switcher-bar">
+        <button class="btn-view-toggle active" id="btnShowTrio">
+          📱 3-Phone Showcase (Reference)
+        </button>
+        <button class="btn-view-toggle" id="btnShowLaptop">
+          💻 Laptop + Phone Mockup
+        </button>
+      </div>
+
+      <!-- DEVICES STAGE -->
+      <div class="device-stage">
+        
+        <!-- Grounding Drop Shadow -->
+        <div class="ground-shadow"></div>
+
+        <!-- =========================================================
+             MODE A: 3-PHONE TRIO (EXACT MATCH TO DRIBBBLE SCREENSHOT 2)
+             ========================================================= -->
+        <div class="phone-trio-wrap" id="phoneTrioWrap">
+          
+          <!-- 1. LEFT PHONE (Arnold Aldridge & Road Navigation) -->
+          <div class="iphone-frame iphone-left">
+            <div class="left-screen-inner">
+              <div class="road-scenery-bg"></div>
+
+              <!-- Top: Pilot card -->
+              <div class="left-pilot-card">
+                <div class="pilot-avatar-wrap">
+                  <svg viewBox="0 0 38 38" fill="none">
+                    <rect width="38" height="38" fill="#3D3D3D"/>
+                    <circle cx="19" cy="15" r="8" fill="#D4FF3D"/>
+                    <path d="M7 36c0-6.627 5.373-12 12-12s12 5.373 12 12" fill="#D4FF3D"/>
+                  </svg>
+                </div>
+                <div class="pilot-details">
+                  <div class="pilot-name">Arnold Aldridge</div>
+                  <div class="pilot-rating">★ 4.9 Rating</div>
+                </div>
+              </div>
+
+              <!-- Center Road Graphic -->
+              <div style="position: relative; z-index: 3; text-align: center; margin: 20px 0;">
+                <svg width="120" height="140" viewBox="0 0 120 140" fill="none" style="margin: 0 auto;">
+                  <!-- Winding Road Line -->
+                  <path d="M60 130 C60 100, 30 80, 50 40 C60 20, 80 15, 80 5" stroke="#D4FF3D" stroke-width="4" stroke-linecap="round" stroke-dasharray="6 6"/>
+                  <!-- Current Location Dot -->
+                  <circle cx="60" cy="130" r="7" fill="#FFFFFF"/>
+                  <circle cx="60" cy="130" r="14" stroke="#D4FF3D" stroke-width="2" opacity="0.6"/>
+                </svg>
+              </div>
+
+              <!-- Bottom: Turn Indicator -->
+              <div class="left-turn-card">
+                <div class="turn-arrow-badge">
+                  <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+                </div>
+                <div class="turn-text">
+                  <div class="turn-dist">250m</div>
+                  <div class="turn-sub">Left Turn Ahead</div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- 2. CENTER PHONE (Main Featured iPhone with Hello Shahriar & 30% Better) -->
+          <div class="iphone-frame iphone-center">
+            <div class="center-screen-inner">
+              
+              <!-- Dynamic Island -->
+              <div class="dynamic-island">
+                <div class="dynamic-cam"></div>
+                <div class="dynamic-sensor"></div>
+              </div>
+
+              <!-- Status Bar -->
+              <div class="iphone-statusbar">
+                <span class="time">9:09</span>
+                <div class="status-icons">
+                  <svg viewBox="0 0 24 24"><path d="M12 4C7.31 4 3.07 5.9 0 8.98L12 21 24 8.98C20.93 5.9 16.69 4 12 4z"/></svg>
+                  <svg viewBox="0 0 24 24"><path d="M17 5v3h1c.55 0 1 .45 1 1v6c0 .55-.45 1-1 1h-1v3c0 .55-.45 1-1 1H7c-.55 0-1-.45-1-1V5c0-.55.45-1 1-1h9c.55 0 1 .45 1 1zm-2 1h-6v12h6V6z"/></svg>
+                </div>
+              </div>
+
+              <!-- User Header: "Hello Shahriar" & Circular Avatar -->
+              <div class="center-user-header">
+                <div class="user-greet-text">
+                  <span class="greet-hello">Hello</span>
+                  <span class="greet-name">Shahriar</span>
+                </div>
+                <div class="user-avatar-badge">
+                  <!-- Stylized Friendly Avatar -->
+                  <svg viewBox="0 0 48 48" fill="none">
+                    <rect width="48" height="48" fill="#2B3624"/>
+                    <circle cx="24" cy="18" r="9" fill="#F0F0F0"/>
+                    <path d="M10 44c0-7.732 6.268-14 14-14s14 6.268 14 14" fill="#F0F0F0"/>
+                  </svg>
+                </div>
+              </div>
+
+              <!-- Featured Lime Card ("30% Better" & Google Play Button) -->
+              <div class="center-lime-card">
+                <!-- Black Pill Tag -->
+                <div class="pill-tag-better">
+                  <span class="dot"></span>
+                  30% Better
+                </div>
+
+                <!-- Graphic row: Big Earnings + 3D Wallet SVG -->
+                <div class="lime-card-graphic-row">
+                  <div class="graphic-stat-text">
+                    <div class="stat-num">$84.50</div>
+                    <div class="stat-sub">Today Earnings</div>
+                  </div>
+
+                  <!-- 3D-styled Multi-Layer Wallet Illustration -->
+                  <div class="wallet-3d-visual">
+                    <svg viewBox="0 0 80 72" fill="none">
+                      <!-- Base Leather Wallet Shadow -->
+                      <rect x="8" y="22" width="64" height="44" rx="14" fill="#0D0D0D"/>
+                      <rect x="8" y="28" width="64" height="10" fill="#1C1C1C"/>
+                      <!-- Cash notes peaking out -->
+                      <path d="M18 16c0-3.314 2.686-6 6-6h32c3.314 0 6 2.686 6 6v8H18v-8z" fill="#D4FF3D" opacity="0.9"/>
+                      <path d="M22 12c0-2.2 1.8-4 4-4h24c2.2 0 4 1.8 4 4v4H22v-4z" fill="#FFF" opacity="0.4"/>
+                      <!-- Wallet Flap & Clasp -->
+                      <rect x="44" y="34" width="28" height="20" rx="8" fill="#292929"/>
+                      <circle cx="58" cy="44" r="4.5" fill="#D4FF3D"/>
+                    </svg>
+                  </div>
+                </div>
+
+                <!-- Google Play Button -->
+                <button class="btn-googleplay-phone" onclick="window.location.href='#download'">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M3.609 1.814L13.793 12 3.61 22.186c-.37-.367-.61-.91-.61-1.544V3.358c0-.634.24-1.177.61-1.544zm11.605 11.608l2.585 2.585-11.45 6.611 8.865-9.196zm2.585-2.844l-2.585 2.585-8.865-9.196 11.45 6.611zm1.408 1.422c.44.254.793.71.793 1.258s-.353 1.004-.793 1.258l-2.025 1.17-2.766-2.766 2.766-2.766 2.025 1.17c.001 0 .001 0 0 0z" fill="#0D0D0D"/>
+                  </svg>
+                  Google Play
+                </button>
+              </div>
+
+              <!-- Bottom Info Strip -->
+              <div class="center-phone-bottom">
+                <div class="earnings-text">
+                  Trip Status
+                  <span>Active #4829</span>
+                </div>
+                <div class="duty-pill">● Online</div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- 3. RIGHT PHONE (Request Alert & Notification) -->
+          <div class="iphone-frame iphone-right">
+            <div class="right-screen-inner">
+              
+              <div class="right-top-bar">
+                <span style="font-size: 13px; font-weight: 700; color: #777;">Alerts</span>
+                <div class="bell-circle">
+                  <svg viewBox="0 0 24 24"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg>
+                </div>
+              </div>
+
+              <!-- Notification Card -->
+              <div class="request-notification-card">
+                <div class="req-head">Received a new trip request</div>
+                <p style="font-size: 12px; color: var(--text-muted); line-height: 1.4;">
+                  Downtown Metro • Pick up passenger at Gate 3.
+                </p>
+                <div class="req-time-badge">
+                  <span>⚡ 03 mins</span>
+                  <span>&gt;</span>
+                </div>
+              </div>
+
+              <!-- Action button -->
+              <div style="background: #141414; border-radius: 16px; padding: 12px; text-align: center; border: 1px solid rgba(255,255,255,0.06);">
+                <div style="font-size: 13px; font-weight: 800; color: var(--accent);">Accept Ride ($12.50)</div>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+
+        <!-- =========================================================
+             MODE B: LAPTOP + OVERLAPPING PHONE DUO
+             ========================================================= -->
+        <div class="laptop-duo-wrap" id="laptopDuoWrap">
+          
+          <!-- Floating Laptop Mockup -->
+          <div class="laptop-mockup">
+            <div class="laptop-screen-bezel">
+              <div class="laptop-camera"></div>
+              
+              <div class="laptop-screen-content">
+                
+                <!-- Mini Navbar -->
+                <div class="mini-nav">
+                  <div class="mini-logo">
+                    <div class="mini-mark">
+                      <svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+                    </div>
+                    <span class="mini-brand">VoltRide</span>
+                  </div>
+                  <div class="mini-links">
+                    <span>Home</span>
+                    <span>How It Works</span>
+                    <span>Features</span>
+                    <span>Testimonial</span>
+                  </div>
+                  <div class="mini-cta">Get App</div>
+                </div>
+
+                <!-- Mini Hero -->
+                <div class="mini-hero">
+                  <div class="mini-badge">#1 Urban Ride Network</div>
+                  <div class="mini-title">
+                    <span class="mw">Smart,</span> <span class="mm">safe, and</span> <span class="mw">fast</span> <span class="mm">rides</span>
+                  </div>
+                </div>
+
+                <!-- Mini Grid -->
+                <div class="mini-grid">
+                  <div class="mini-card">
+                    <div class="mini-card-icon">
+                      <svg viewBox="0 0 24 24"><path d="M12 2L4.5 20.29l.71.71L12 18l6.79 3 .71-.71z"/></svg>
+                    </div>
+                    <div class="mini-card-title">Bike Taxi</div>
+                    <div class="mini-card-desc">Zip past congestion with verified helmet pilots.</div>
+                  </div>
+
+                  <div class="mini-card">
+                    <div class="mini-card-icon">
+                      <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg>
+                    </div>
+                    <div class="mini-card-title">Safe Shield</div>
+                    <div class="mini-card-desc">Live SOS telemetry & geofence perimeter alerts.</div>
+                  </div>
+
+                  <div class="mini-card">
+                    <div class="mini-card-icon">
+                      <svg viewBox="0 0 24 24"><path d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z"/></svg>
+                    </div>
+                    <div class="mini-card-title">Zero Surge</div>
+                    <div class="mini-card-desc">Fair, transparent pricing guaranteed on every ride.</div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+            <div class="laptop-base">
+              <div class="laptop-notch"></div>
+            </div>
+          </div>
+
+          <!-- Overlapping Phone in Front of Laptop -->
+          <div class="iphone-frame duo-overlapping-phone">
+            <div class="center-screen-inner" style="height: 460px;">
+              <div class="dynamic-island">
+                <div class="dynamic-cam"></div>
+                <div class="dynamic-sensor"></div>
+              </div>
+
+              <div class="center-user-header" style="margin-top: 6px;">
+                <div class="user-greet-text">
+                  <span class="greet-hello">Hello</span>
+                  <span class="greet-name">Shahriar</span>
+                </div>
+                <div class="user-avatar-badge">
+                  <svg viewBox="0 0 48 48" fill="none">
+                    <rect width="48" height="48" fill="#2B3624"/>
+                    <circle cx="24" cy="18" r="9" fill="#F0F0F0"/>
+                    <path d="M10 44c0-7.732 6.268-14 14-14s14 6.268 14 14" fill="#F0F0F0"/>
+                  </svg>
+                </div>
+              </div>
+
+              <div class="center-lime-card" style="margin-top: 8px;">
+                <div class="pill-tag-better">
+                  <span class="dot"></span>
+                  30% Better
+                </div>
+                <div class="lime-card-graphic-row">
+                  <div class="graphic-stat-text">
+                    <div class="stat-num">$84.50</div>
+                    <div class="stat-sub">Today Earnings</div>
+                  </div>
+                  <div class="wallet-3d-visual" style="width: 65px; height: 60px;">
+                    <svg viewBox="0 0 80 72" fill="none">
+                      <rect x="8" y="22" width="64" height="44" rx="14" fill="#0D0D0D"/>
+                      <rect x="8" y="28" width="64" height="10" fill="#1C1C1C"/>
+                      <path d="M18 16c0-3.314 2.686-6 6-6h32c3.314 0 6 2.686 6 6v8H18v-8z" fill="#D4FF3D"/>
+                      <circle cx="58" cy="44" r="4.5" fill="#D4FF3D"/>
+                    </svg>
+                  </div>
+                </div>
+                <button class="btn-googleplay-phone" onclick="window.location.href='#download'">
+                  <svg viewBox="0 0 24 24"><path d="M3.609 1.814L13.793 12 3.61 22.186c-.37-.367-.61-.91-.61-1.544V3.358c0-.634.24-1.177.61-1.544zm11.605 11.608l2.585 2.585-11.45 6.611 8.865-9.196zm2.585-2.844l-2.585 2.585-8.865-9.196 11.45 6.611zm1.408 1.422c.44.254.793.71.793 1.258s-.353 1.004-.793 1.258l-2.025 1.17-2.766-2.766 2.766-2.766 2.025 1.17c.001 0 .001 0 0 0z" fill="#0D0D0D"/></svg>
+                  Google Play
+                </button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- Dribbble Video Player Bar from Screenshot 2 -->
+      <div class="motion-controls-bar">
+        <button class="btn-motion-play" id="btnPlayMotion" aria-label="Play Motion">
+          <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+        </button>
+        <button class="btn-motion-sound" id="btnMuteMotion" aria-label="Toggle Sound">
+          <svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg>
+        </button>
+        <div class="motion-progress-track" id="motionTrack">
+          <div class="motion-progress-fill" id="motionFill"></div>
+        </div>
+        <div class="motion-time-stamp" id="motionTime">0:14 / 0:30</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- =============================================================
+       SOCIAL PROOF SECTION: "Loved by Riders Everywhere"
+       ============================================================= -->
+  <section class="social-proof-section" id="testimonials">
+    <div class="proof-container">
+      
+      <div class="proof-header">
+        <div class="proof-titles">
+          <h2>Loved by Riders Everywhere</h2>
+          <p>Join <span>120,000+ daily commuters</span> traveling safer and 3x faster.</p>
+        </div>
+
+        <div class="carousel-arrows">
+          <button class="btn-arrow" id="scrollPrev" aria-label="Scroll left">
+            <svg viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+          </button>
+          <button class="btn-arrow" id="scrollNext" aria-label="Scroll right">
+            <svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Horizontal Scrollable Row of Circular User Avatar Cards -->
+      <div class="proof-scroll-track" id="proofTrack">
+        
+        <!-- Card 1 -->
+        <div class="proof-card">
+          <div class="rider-profile-row">
+            <div class="rider-avatar">
+              <svg viewBox="0 0 52 52">
+                <rect width="52" height="52" fill="#2F3E22"/>
+                <circle cx="26" cy="20" r="10" fill="#D4FF3D"/>
+                <path d="M10 46c0-8.837 7.163-16 16-16s16 7.163 16 16" fill="#D4FF3D"/>
+              </svg>
+            </div>
+            <div class="rider-meta">
+              <div class="rider-name">Sarah Chen</div>
+              <div class="rider-location">Daily Commuter • Austin</div>
+            </div>
+          </div>
+          <div class="stars-row">
+            <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+          </div>
+          <p class="rider-quote">
+            "VoltRide cut my morning travel time from 45 minutes down to 18 minutes. The bike pilots are polite and always have clean sanitized helmets."
+          </p>
+          <div class="rider-tag">✓ 342 Completed Rides</div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="proof-card">
+          <div class="rider-profile-row">
+            <div class="rider-avatar">
+              <svg viewBox="0 0 52 52">
+                <rect width="52" height="52" fill="#202A35"/>
+                <circle cx="26" cy="20" r="10" fill="#90CAF9"/>
+                <path d="M10 46c0-8.837 7.163-16 16-16s16 7.163 16 16" fill="#90CAF9"/>
+              </svg>
+            </div>
+            <div class="rider-meta">
+              <div class="rider-name">Marcus Vance</div>
+              <div class="rider-location">Tech Consultant • Seattle</div>
+            </div>
+          </div>
+          <div class="stars-row">
+            <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+          </div>
+          <p class="rider-quote">
+            "The live geofence shield and instant trip sharing give my family total peace of mind whenever I travel late at night. Flawless app experience."
+          </p>
+          <div class="rider-tag">✓ Verified Rider</div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="proof-card">
+          <div class="rider-profile-row">
+            <div class="rider-avatar">
+              <svg viewBox="0 0 52 52">
+                <rect width="52" height="52" fill="#3D291F"/>
+                <circle cx="26" cy="20" r="10" fill="#FFB74D"/>
+                <path d="M10 46c0-8.837 7.163-16 16-16s16 7.163 16 16" fill="#FFB74D"/>
+              </svg>
+            </div>
+            <div class="rider-meta">
+              <div class="rider-name">Elena Rostova</div>
+              <div class="rider-location">Student • Boston</div>
+            </div>
+          </div>
+          <div class="stars-row">
+            <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+          </div>
+          <p class="rider-quote">
+            "Zero cancellation fees and no insane rain surges. What you see is what you pay. It saved me over $220 on ride fares just this month."
+          </p>
+          <div class="rider-tag">✓ 180+ Rides</div>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="proof-card">
+          <div class="rider-profile-row">
+            <div class="rider-avatar">
+              <svg viewBox="0 0 52 52">
+                <rect width="52" height="52" fill="#2E1C38"/>
+                <circle cx="26" cy="20" r="10" fill="#CE93D8"/>
+                <path d="M10 46c0-8.837 7.163-16 16-16s16 7.163 16 16" fill="#CE93D8"/>
+              </svg>
+            </div>
+            <div class="rider-meta">
+              <div class="rider-name">David Kalu</div>
+              <div class="rider-location">Healthcare Worker • Chicago</div>
+            </div>
+          </div>
+          <div class="stars-row">
+            <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+          </div>
+          <p class="rider-quote">
+            "When shifts end at 3 AM, regular cabs take 20 minutes to arrive. VoltRide bike pilots show up within 90 seconds. Truly life-saving service."
+          </p>
+          <div class="rider-tag">✓ Verified Night Rider</div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- =============================================================
+       HOW IT WORKS SECTION
+       ============================================================= -->
+  <section class="how-section" id="how-it-works">
+    <div class="section-label">Seamless Experience</div>
+    <h2 class="section-title">Ride in 3 Simple Steps. <span>Zero Hassle.</span></h2>
+
+    <div class="steps-grid">
+      
+      <div class="step-card">
+        <span class="step-number">01</span>
+        <div class="step-icon-wrap">
+          <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+        </div>
+        <h3 class="step-heading">Set Destination</h3>
+        <p class="step-text">
+          Open the app. Your GPS auto-locks your exact pickup point. Choose your drop location or select your saved Home Zone with one click.
+        </p>
+      </div>
+
+      <div class="step-card">
+        <span class="step-number">02</span>
+        <div class="step-icon-wrap">
+          <svg viewBox="0 0 24 24"><path d="M15.5 5.5c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zM5 12c-2.8 0-5 2.2-5 5s2.2 5 5 5 5-2.2 5-5-2.2-5-5-5zm0 8.5c-1.9 0-3.5-1.6-3.5-3.5s1.6-3.5 3.5-3.5 3.5 1.6 3.5 3.5-1.6 3.5-3.5 3.5zm7-10l-1.9 3.2c-.3.5-.1 1.1.4 1.4.5.3 1.1.1 1.4-.4L13.7 12H17v-2h-2.3l-1.3-2.1c-.6-1-1.7-1.6-2.9-1.6H8v2h2.5l1.5 1.7zM19 12c-2.8 0-5 2.2-5 5s2.2 5 5 5 5-2.2 5-5-2.2-5-5-5zm0 8.5c-1.9 0-3.5-1.6-3.5-3.5s1.6-3.5 3.5-3.5 3.5 1.6 3.5 3.5-1.6 3.5-3.5 3.5z"/></svg>
+        </div>
+        <h3 class="step-heading">Match with Nearest Pilot</h3>
+        <p class="step-text">
+          Our intelligent dispatch algorithm pairs you with the closest 4.8+ rated pilot in under 45 seconds. View pilot name, bike model, and live ETA.
+        </p>
+      </div>
+
+      <div class="step-card">
+        <span class="step-number">03</span>
+        <div class="step-icon-wrap">
+          <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/></svg>
+        </div>
+        <h3 class="step-heading">Ride Safe & Pay Seamlessly</h3>
+        <p class="step-text">
+          Hop on with sanitized safety helmets. Track the ride in real-time, share trip status with family, and pay automatically via Apple Pay, Google Pay, or Cash.
+        </p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- =============================================================
+       INTERACTIVE FARE CALCULATOR
+       ============================================================= -->
+  <section class="calculator-section" id="fare-estimator">
+    <div class="calc-container">
+      
+      <div class="calc-info">
+        <div class="section-label">Transparent Fares</div>
+        <h2>Know Your Price Before You Ride</h2>
+        <p>
+          No hidden fees. No surge surprise. Compare ride options and see exact guaranteed fares backed by our lowest-price commitment.
+        </p>
+
+        <ul class="calc-benefits">
+          <li>
+            <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+            Guaranteed lowest per-mile rate in the city
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+            Zero cancellation charges on unconfirmed pickups
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+            Instant UPI, Cards, Google Pay & Cash accepted
+          </li>
+        </ul>
+      </div>
+
+      <div class="calc-box">
+        <div class="calc-tabs">
+          <button class="ride-tab-btn active" data-type="bike">
+            🛵 Bike Taxi
+          </button>
+          <button class="ride-tab-btn" data-type="auto">
+            🛺 Auto Rickshaw
+          </button>
+          <button class="ride-tab-btn" data-type="cab">
+            🚗 Comfort Cab
+          </button>
+        </div>
+
+        <div class="input-group">
+          <label for="pickupInput">Pickup Point</label>
+          <input type="text" id="pickupInput" class="input-field" value="Downtown Central Station">
+        </div>
+
+        <div class="input-group">
+          <label for="dropInput">Drop Destination</label>
+          <input type="text" id="dropInput" class="input-field" value="Airport Terminal 2">
+        </div>
+
+        <div class="estimate-result-card">
+          <div class="est-text">
+            <div class="est-label">Estimated Fare</div>
+            <div class="est-price" id="calcFare">$6.80</div>
+          </div>
+          <div class="est-meta">
+            <div class="est-time" id="calcTime">~ 14 mins</div>
+            <div class="est-sub" id="calcDist">5.2 miles • Fastest route</div>
+          </div>
+        </div>
+
+        <button class="btn-calc-submit" onclick="alert('Pickup requested! Your pilot is arriving in 2 minutes.')">
+          Book Instant Ride Now
+        </button>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- =============================================================
+       FEATURES SECTION
+       ============================================================= -->
+  <section class="features-section" id="features">
+    <div class="section-label">Engineered for Urban Speed</div>
+    <h2 class="section-title">Built with Cutting-Edge Safety & Speed</h2>
+
+    <div class="features-grid">
+      
+      <div class="feature-card">
+        <div class="feat-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+        </div>
+        <h3>One-Tap SOS & Live Guardian</h3>
+        <p>Direct integration with local law enforcement and emergency contacts. Automatically shares live telemetry and route deviation alerts.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feat-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 2L1 21h22L12 2zm0 3.99L19.53 19H4.47L12 5.99zM11 16h2v2h-2zm0-6h2v4h-2z"/></svg>
+        </div>
+        <h3>Smart Geofencing Boundaries</h3>
+        <p>Set automated perimeter alerts for Home, Work, and Campus. Instantly alerts designated contacts whenever you arrive or depart safely.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feat-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+        </div>
+        <h3>100% Insured Commutes</h3>
+        <p>Every single ride on VoltRide includes comprehensive third-party medical & accidental insurance coverage at zero additional cost.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feat-icon">
+          <svg viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zm4.24 16L12 15.45 7.77 18l1.12-4.81-3.73-3.23 4.92-.42L12 5l1.92 4.53 4.92.42-3.73 3.23L16.23 18z"/></svg>
+        </div>
+        <h3>Vetted & Trained Pilots</h3>
+        <p>Multi-step background verification, physical driving tests, clean vehicle certifications, and minimum 4.8 star customer satisfaction benchmarks.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feat-icon">
+          <svg viewBox="0 0 24 24"><path d="M13 3c-4.97 0-9 4.03-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42C8.27 19.99 10.51 21 13 21c4.97 0 9-4.03 9-9s-4.03-9-9-9zm-1 5v5l4.28 2.54.72-1.21-3.5-2.08V8H12z"/></svg>
+        </div>
+        <h3>Rapid 2-Minute Average Pickup</h3>
+        <p>Our high-density vehicle mesh ensures that whether you're downtown or in the suburbs, a pilot is already right around the corner.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feat-icon">
+          <svg viewBox="0 0 24 24"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
+        </div>
+        <h3>Zero Cancellation Penalty</h3>
+        <p>Changed your mind? Cancel unconfirmed rides without any penalty or surprise billing charges. Total flexibility in your hands.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- =============================================================
+       DOWNLOAD CTA BANNER
+       ============================================================= -->
+  <section class="cta-banner-section" id="download">
+    <div class="cta-banner-box">
+      <h2>Ready for <span>faster, smarter</span> rides?</h2>
+      <p>
+        Download the VoltRide app today and get 50% off your first 3 bike taxi rides with code <strong>VOLT50</strong>.
+      </p>
+
+      <div class="cta-buttons-row">
+        <a href="#download" class="btn-pill-cta" style="padding: 16px 36px; font-size: 16px;">
+          <svg viewBox="0 0 24 24">
+            <path d="M3.609 1.814L13.793 12 3.61 22.186c-.37-.367-.61-.91-.61-1.544V3.358c0-.634.24-1.177.61-1.544zm11.605 11.608l2.585 2.585-11.45 6.611 8.865-9.196zm2.585-2.844l-2.585 2.585-8.865-9.196 11.45 6.611zm1.408 1.422c.44.254.793.71.793 1.258s-.353 1.004-.793 1.258l-2.025 1.17-2.766-2.766 2.766-2.766 2.025 1.17c.001 0 .001 0 0 0z"/>
+          </svg>
+          Get it on Google Play
+        </a>
+
+        <a href="#download" class="btn-store-dark" style="padding: 16px 36px; font-size: 16px;">
+          <svg viewBox="0 0 24 24">
+            <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.37c.62-.75 1.04-1.8 0.92-2.85-.9.04-1.99.6-2.63 1.35-.57.65-1.06 1.72-.93 2.74 1.01.08 2.02-.49 2.64-1.24z"/>
+          </svg>
+          Download on App Store
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============================================================
+       FOOTER
+       ============================================================= -->
+  <footer class="footer">
+    <div class="footer-container">
+      
+      <div class="footer-brand">
+        <div class="logo-group">
+          <div class="logo-mark">
+            <svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" /></svg>
+          </div>
+          <span class="logo-name">Volt<span>Ride</span></span>
+        </div>
+        <p>
+          Next-generation urban bike taxi and mobility network. Fast, affordable, and safe travel for everyone.
+        </p>
+      </div>
+
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="#home">About Us</a></li>
+          <li><a href="#features">Safety Standards</a></li>
+          <li><a href="#testimonials">Careers</a></li>
+          <li><a href="#how-it-works">Press & Media</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Ride</h4>
+        <ul>
+          <li><a href="#fare-estimator">Bike Taxi</a></li>
+          <li><a href="#fare-estimator">Auto Rides</a></li>
+          <li><a href="#fare-estimator">City Cabs</a></li>
+          <li><a href="#download">Become a Pilot</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Legal & Support</h4>
+        <ul>
+          <li><a href="#home">Privacy Policy</a></li>
+          <li><a href="#home">Terms of Service</a></li>
+          <li><a href="#home">24/7 SOS Help</a></li>
+          <li><a href="#home">Insurance Info</a></li>
+        </ul>
+      </div>
+
+    </div>
+
+    <div class="footer-bottom">
+      <div>&copy; 2026 VoltRide Technologies Inc. All rights reserved.</div>
+      <div>Designed with pure speed, safety, and precision.</div>
+    </div>
+  </footer>
+
+  <!-- =============================================================
+       SEARCH MODAL
+       ============================================================= -->
+  <div class="search-modal-backdrop" id="searchModal">
+    <div class="search-modal-card">
+      <div class="search-input-wrap">
+        <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+        <input type="text" id="modalSearchInput" placeholder="Search cities, pilot safety, fares, or SOS..." autofocus>
+      </div>
+      <div class="search-quick-tags">
+        <span class="quick-tag" onclick="selectTag('Fare to Airport')">Airport Fare</span>
+        <span class="quick-tag" onclick="selectTag('Safety Guarantee')">Safety Shield</span>
+        <span class="quick-tag" onclick="selectTag('Become a Pilot')">Pilot Earnings</span>
+        <span class="quick-tag" onclick="selectTag('Home Zone Alerts')">Geofencing</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- =============================================================
+       INLINE INTERACTIVE JAVASCRIPT
+       ============================================================= -->
+  <script>
+    // 1. Mobile Menu Toggle
+    const hamburgerBtn = document.getElementById('hamburgerBtn');
+    const mobileDrawer = document.getElementById('mobileDrawer');
+    const mobileLinks = document.querySelectorAll('.mobile-link');
+
+    hamburgerBtn.addEventListener('click', () => {
+      mobileDrawer.classList.toggle('open');
+    });
+
+    mobileLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        mobileDrawer.classList.remove('open');
+      });
+    });
+
+    // 2. Search Modal
+    const searchBtn = document.getElementById('searchBtn');
+    const searchModal = document.getElementById('searchModal');
+    const modalSearchInput = document.getElementById('modalSearchInput');
+
+    searchBtn.addEventListener('click', () => {
+      searchModal.classList.add('active');
+      setTimeout(() => modalSearchInput.focus(), 50);
+    });
+
+    searchModal.addEventListener('click', (e) => {
+      if (e.target === searchModal) {
+        searchModal.classList.remove('active');
+      }
+    });
+
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        searchModal.classList.remove('active');
+        mobileDrawer.classList.remove('open');
+      }
+    });
+
+    function selectTag(term) {
+      modalSearchInput.value = term;
+      alert(`Searching for "${term}" across VoltRide knowledge base...`);
+      searchModal.classList.remove('active');
+    }
+
+    // 3. Showcase View Switcher (3-Phone vs Laptop Duo)
+    const btnShowTrio = document.getElementById('btnShowTrio');
+    const btnShowLaptop = document.getElementById('btnShowLaptop');
+    const phoneTrioWrap = document.getElementById('phoneTrioWrap');
+    const laptopDuoWrap = document.getElementById('laptopDuoWrap');
+
+    btnShowTrio.addEventListener('click', () => {
+      btnShowTrio.classList.add('active');
+      btnShowLaptop.classList.remove('active');
+      phoneTrioWrap.style.display = 'flex';
+      laptopDuoWrap.style.display = 'none';
+    });
+
+    btnShowLaptop.addEventListener('click', () => {
+      btnShowLaptop.classList.add('active');
+      btnShowTrio.classList.remove('active');
+      phoneTrioWrap.style.display = 'none';
+      laptopDuoWrap.style.display = 'block';
+    });
+
+    // 4. Dribbble Video Playback Simulation
+    const btnPlayMotion = document.getElementById('btnPlayMotion');
+    const motionFill = document.getElementById('motionFill');
+    const motionTime = document.getElementById('motionTime');
+    let isPlaying = true;
+    let progress = 48;
+
+    btnPlayMotion.addEventListener('click', () => {
+      isPlaying = !isPlaying;
+      btnPlayMotion.innerHTML = isPlaying ? 
+        '<svg viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>' : 
+        '<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>';
+    });
+
+    setInterval(() => {
+      if (isPlaying) {
+        progress = (progress + 1) % 100;
+        motionFill.style.width = progress + '%';
+        const sec = Math.floor((progress / 100) * 30);
+        motionTime.textContent = `0:${sec < 10 ? '0' : ''}${sec} / 0:30`;
+      }
+    }, 500);
+
+    // 5. Social Proof Carousel Drag & Scroll
+    const proofTrack = document.getElementById('proofTrack');
+    const scrollPrev = document.getElementById('scrollPrev');
+    const scrollNext = document.getElementById('scrollNext');
+
+    if (scrollPrev && scrollNext && proofTrack) {
+      scrollPrev.addEventListener('click', () => {
+        proofTrack.scrollBy({ left: -340, behavior: 'smooth' });
+      });
+      scrollNext.addEventListener('click', () => {
+        proofTrack.scrollBy({ left: 340, behavior: 'smooth' });
+      });
+    }
+
+    // 6. Interactive Ride Fare Calculator
+    const tabButtons = document.querySelectorAll('.ride-tab-btn');
+    const calcFare = document.getElementById('calcFare');
+    const calcTime = document.getElementById('calcTime');
+    const calcDist = document.getElementById('calcDist');
+
+    const rideData = {
+      bike: { fare: '$6.80', time: '~ 14 mins', dist: '5.2 miles • Fastest route' },
+      auto: { fare: '$9.40', time: '~ 19 mins', dist: '5.2 miles • Sheltered ride' },
+      cab: { fare: '$16.20', time: '~ 22 mins', dist: '5.2 miles • AC Comfort' }
+    };
+
+    tabButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        tabButtons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const type = btn.dataset.type;
+        if (rideData[type]) {
+          calcFare.textContent = rideData[type].fare;
+          calcTime.textContent = rideData[type].time;
+          calcDist.textContent = rideData[type].dist;
+        }
+      });
+    });
+
+    // 7. Active Nav Link on Scroll
+    const sections = document.querySelectorAll('section[id]');
+    window.addEventListener('scroll', () => {
+      const scrollY = window.pageYOffset;
+      sections.forEach(current => {
+        const sectionHeight = current.offsetHeight;
+        const sectionTop = current.offsetTop - 120;
+        const sectionId = current.getAttribute('id');
+        const link = document.querySelector(`.nav-links a[href*='${sectionId}']`);
+        if (link) {
+          if (scrollY > sectionTop && scrollY <= sectionTop + sectionHeight) {
+            link.classList.add('active');
+          } else {
+            link.classList.remove('active');
+          }
+        }
+      });
+    });
+  </script>
+</body>
+</html>

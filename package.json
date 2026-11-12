@@ -1,0 +1,23 @@
+{
+  "name": "safetrip-workspace",
+  "version": "1.0.0",
+  "description": "SafeTrip - Smart travel reminder & family safety application",
+  "scripts": {
+    "start": "npm run mobile",
+    "web": "npm --prefix mobile run web",
+    "dev": "npm --prefix mobile run web",
+    "mobile": "npm --prefix mobile run start",
+    "mobile:clean": "powershell -Command \"Get-NetTCPConnection -LocalPort 8081 -ErrorAction SilentlyContinue | ForEach-Object { Stop-Process -Id $_.OwningProcess -Force -ErrorAction SilentlyContinue }\"",
+    "mobile:web": "npm --prefix mobile run web",
+    "web:fresh": "npm run mobile:clean && npm --prefix mobile run web",
+    "server": "npm --prefix server run dev",
+    "server:build": "npm --prefix server run build",
+    "server:clean": "powershell -Command \"Get-NetTCPConnection -LocalPort 5000 -ErrorAction SilentlyContinue | ForEach-Object { Stop-Process -Id $_.OwningProcess -Force -ErrorAction SilentlyContinue }\"",
+    "clean": "powershell -Command \"Get-NetTCPConnection -LocalPort 5000,8081 -ErrorAction SilentlyContinue | ForEach-Object { Stop-Process -Id $_.OwningProcess -Force -ErrorAction SilentlyContinue }\"",
+    "build": "npm --prefix mobile run build:web && npm --prefix server run build",
+    "build:web": "npm --prefix mobile run build:web",
+    "build:apk": "npm --prefix mobile run build:apk",
+    "test": "npm --prefix server test"
+  },
+  "private": true
+}

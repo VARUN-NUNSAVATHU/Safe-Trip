@@ -1,0 +1,58 @@
+# Dependencies
+node_modules/
+*/node_modules/
+
+# Production builds
+dist/
+*/dist/
+build/
+*/build/
+web-build/
+*/web-build/
+
+# Expo
+.expo/
+*/.expo/
+expo-env.d.ts
+*/expo-env.d.ts
+
+# Native builds
+.kotlin/
+*.orig.*
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+/mobile/ios/
+/mobile/android/
+
+# Metro
+.metro-health-check*
+
+# Environment and secrets
+.env
+.env*.local
+*.env
+server/.env
+
+# Runtime / Test data
+server/data/*.json
+!server/data/.gitkeep
+
+# Temporary & backup folders
+backup_website_version/
+scratch/
+
+# Logs & debugging
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+*.log
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# TypeScript build cache
+*.tsbuildinfo

@@ -1,0 +1,18 @@
+services:
+  # 1. Full-Stack Production Unified Web & API Service
+  - type: web
+    name: safetrip-production
+    env: node
+    plan: free
+    region: oregon
+    buildCommand: npm install && npm --prefix mobile install && npm --prefix mobile run build:web && npm --prefix server install && npm --prefix server run build
+    startCommand: npm --prefix server start
+    envVars:
+      - key: PORT
+        value: 5000
+      - key: NODE_ENV
+        value: production
+      - key: JWT_SECRET
+        generateValue: true
+      - key: MONGODB_URI
+        sync: false
