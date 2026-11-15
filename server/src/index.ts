@@ -4,6 +4,8 @@ import { ENV } from './config/env.js';
 import { connectDB } from './config/db.js';
 import apiRouter from './routes/index.js';
 import { errorHandler } from './middleware/errorHandler.js';
+import { sanitizeInput } from './middleware/sanitizer.js';
+import { apiRateLimiter } from './middleware/rateLimiter.js';
 
 import path from 'path';
 import fs from 'fs';
@@ -16,7 +18,9 @@ const app = express();
 
 // Middleware
 app.use(cors());
-app.use(express.json());
+app.use(express.json({ limit: '10mb' }));
+app.use(sanitizeInput);
+app.use('/api', apiRateLimiter);
 
 // API Routes
 app.use('/api', apiRouter);

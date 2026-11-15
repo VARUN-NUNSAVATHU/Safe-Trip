@@ -4,6 +4,11 @@ import tripRoutes from './tripRoutes.js';
 import contactRoutes from './contactRoutes.js';
 import userRoutes from './userRoutes.js';
 import destinationRoutes from './destinationRoutes.js';
+import aiRoutes from './aiRoutes.js';
+import analyticsRoutes from './analyticsRoutes.js';
+import paymentRoutes from './paymentRoutes.js';
+import uploadRoutes from './uploadRoutes.js';
+import oauthRoutes from './oauthRoutes.js';
 import { getDBStatus } from '../config/db.js';
 
 const apiRouter = Router();
@@ -25,5 +30,10 @@ apiRouter.use('/trips', tripRoutes);
 apiRouter.use('/contacts', contactRoutes);
 apiRouter.use('/users', userRoutes);
 apiRouter.use('/destinations', destinationRoutes);
+apiRouter.use('/ai', aiRoutes);
+apiRouter.use('/analytics', analyticsRoutes);
+apiRouter.use('/payments', paymentRoutes);
+apiRouter.use('/upload', uploadRoutes);
+apiRouter.use('/oauth', oauthRoutes);
 
 export default apiRouter;

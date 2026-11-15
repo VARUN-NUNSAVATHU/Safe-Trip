@@ -64,3 +64,6 @@ export const requireAuth = (req: AuthRequest, res: Response, next: NextFunction)
   };
   next();
 };
+
+export const authenticateToken = requireAuth;
+

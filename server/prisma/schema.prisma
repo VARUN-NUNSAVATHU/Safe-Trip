@@ -1,0 +1,144 @@
+// SafeTrip PostgreSQL Relational Schema
+// Demonstrates Kalvium SQL (Postgres) Concepts:
+// - Relational schema design with PK/FK
+// - Indexing for query performance (SQL)
+// - Normalization basics (3NF)
+// - ORM usage (Prisma)
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum Role {
+  USER
+  ADMIN
+  MODERATOR
+}
+
+enum TripStatus {
+  SCHEDULED
+  ACTIVE
+  COMPLETED
+  CANCELLED
+}
+
+enum TransportMode {
+  CAR
+  TRANSIT
+  WALKING
+  BICYCLE
+}
+
+model User {
+  id           String        @id @default(uuid())
+  name         String
+  email        String        @unique
+  passwordHash String
+  role         Role          @default(USER)
+  phone        String?
+  pushToken    String?
+  homeLat      Float?
+  homeLon      Float?
+  homeRadius   Int           @default(200)
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+
+  destinations Destination[]
+  contacts     Contact[]
+  trips        Trip[]
+  subscriptions Subscription[]
+
+  @@index([email])
+}
+
+model Destination {
+  id               String   @id @default(uuid())
+  userId           String
+  name             String
+  address          String
+  category         String
+  latitude         Float
+  longitude        Float
+  distanceKm       Float    @default(0)
+  estimatedMinutes Int      @default(0)
+  createdAt        DateTime @default(now())
+
+  user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([latitude, longitude])
+}
+
+model Contact {
+  id                 String   @id @default(uuid())
+  userId             String
+  name               String
+  phone              String
+  relationship       String
+  notifyOnDeparture  Boolean  @default(true)
+  notifyOnArrival    Boolean  @default(true)
+  notifyOnEmergency  Boolean  @default(true)
+  createdAt          DateTime @default(now())
+
+  user               User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model Trip {
+  id               String        @id @default(uuid())
+  userId           String
+  destName         String
+  destAddress      String
+  destLat          Float
+  destLon          Float
+  originName       String
+  originLat        Float
+  originLon        Float
+  status           TripStatus    @default(ACTIVE)
+  transportMode    TransportMode @default(CAR)
+  distanceKm       Float
+  estimatedMinutes Int
+  elapsedMinutes   Int           @default(0)
+  startTime        DateTime      @default(now())
+  endTime          DateTime?
+
+  user             User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  alertLogs        AlertLog[]
+
+  @@index([userId, status])
+  @@index([startTime])
+}
+
+model AlertLog {
+  id          String   @id @default(uuid())
+  tripId      String
+  alertType   String   // DEPARTURE, ARRIVAL, SOS
+  recipient   String
+  channel     String   // SMS, PUSH, WEBHOOK
+  status      String   // SENT, SIMULATED, FAILED
+  payload     String
+  createdAt   DateTime @default(now())
+
+  trip        Trip     @relation(fields: [tripId], references: [id], onDelete: Cascade)
+
+  @@index([tripId])
+}
+
+model Subscription {
+  id           String   @id @default(uuid())
+  userId       String
+  planId       String
+  status       String   // ACTIVE, CANCELLED
+  amountUsd    Float
+  createdAt    DateTime @default(now())
+
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
